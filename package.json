@@ -3,8 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "react-native-scripts": "1.11.1",
+    "babel-eslint": "^8.2.2",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-jest": "^21.15.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0",
     "jest-expo": "25.0.0",
+    "react-native-debugger-open": "^0.3.17",
+    "react-native-scripts": "1.11.1",
     "react-test-renderer": "16.2.0"
   },
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
@@ -13,14 +21,26 @@
     "eject": "react-native-scripts eject",
     "android": "react-native-scripts android",
     "ios": "react-native-scripts ios",
-    "test": "node node_modules/jest/bin/jest.js"
+    "lint": "eslint src",
+    "lint:fix": "npm run lint -- --fix",
+    "test": "node node_modules/jest/bin/jest.js",
+    "postinstall": "rndebugger-open"
   },
   "jest": {
     "preset": "jest-expo"
   },
   "dependencies": {
     "expo": "^25.0.0",
+    "prop-types": "^15.6.1",
     "react": "16.2.0",
-    "react-native": "0.52.0"
+    "react-native": "0.52.0",
+    "react-native-audio-toolkit": "^1.0.6",
+    "react-native-keyboard-aware-scrollview": "^2.0.0",
+    "react-native-swipeout": "^2.3.3",
+    "react-navigation": "^1.5.8",
+    "react-redux": "^5.0.7",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0",
+    "reselect": "^3.0.1"
   }
 }
