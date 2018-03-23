@@ -2,7 +2,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Component from '../components/entry';
 import { changePageType, getAccountId, getEntryId } from '../reducers/app';
-import { getEntry } from '../reducers/entry-list';
+import { getEntry, addEntry } from '../reducers/entry-list';
 
 function mapStateToProps (state, props) {
 	const accountId = getAccountId(state);
@@ -17,6 +17,7 @@ function mapStateToProps (state, props) {
 
 function mapDispatchToProps () {
 	return bindActionCreators({
+		addEntry,
 		changePageType
 	});
 }

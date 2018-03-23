@@ -1,10 +1,13 @@
 import { guidGenerator } from '../utils';
 import { createSelector } from 'reselect';
+import { HYDRATE } from './app';
 
 export const ADD_ENTRY = 'ADD_ENTRY';
 
 export default function reducer (state = [], action) {
 	switch (action.type) {
+		case HYDRATE:
+			return action.entryList;
 		case ADD_ENTRY:
 			return [
 				...state,

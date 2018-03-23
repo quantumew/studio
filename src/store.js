@@ -1,9 +1,10 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import reducers from './reducers';
+import { hydrate } from './reducers/app';
 
 /* global __REDUX_DEVTOOLS_EXTENSION_COMPOSE__ */
-export default function makeStore (preloadedState, name) {
+export default function makeStore (name) {
 	let composeEnhancers;
 
 	if (typeof __REDUX_DEVTOOLS_EXTENSION_COMPOSE__ === 'function') {
@@ -14,10 +15,13 @@ export default function makeStore (preloadedState, name) {
 		composeEnhancers = compose;
 	}
 
-	return createStore(
+	const store = createStore(
 		reducers,
-		preloadedState,
+		{},
 		composeEnhancers(applyMiddleware(thunkMiddleware))
 	);
+	hydrate(store.dispatch);
+
+	return store;
 }
 

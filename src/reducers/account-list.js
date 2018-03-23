@@ -1,9 +1,12 @@
 import { guidGenerator } from '../utils';
+import { HYDRATE } from './app';
 
 export const ADD_ACCOUNT = 'ADD_ACCOUNT';
 
 export default function reducer (state = [], action) {
 	switch (action.type) {
+		case HYDRATE:
+			return action.accountList;
 		case ADD_ACCOUNT:
 			return [
 				...state,

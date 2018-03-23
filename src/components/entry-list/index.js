@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Footer from './footer';
-import { Button } from 'react-native';
+import { Button, StyleSheet } from 'react-native';
 import { ENTRY } from '../../constants';
 
 export default class EntryList extends React.Component {

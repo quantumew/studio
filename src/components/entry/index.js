@@ -5,10 +5,12 @@ import Footer from './footer';
 export default class Entry extends React.Component {
 	render () {
 		return (
-			<Footer />
+			<Footer addEntry={this.props.addEntry} />
 		);
 	}
 }
 
-Footer.propTypes = {
+Entry.propTypes = {
+	addEntry: PropTypes.func.isRequired,
+	text: PropTypes.string
 };

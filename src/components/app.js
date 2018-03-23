@@ -24,8 +24,8 @@ export default class App extends React.Component {
 
 	render () {
 		return (
-			<View style={styles.container}>
-				<Text style={styles.header}> Studio </Text>
+			<View style={appStyles.container}>
+				<Text style={appStyles.header}> Studio </Text>
 				{this.renderPage()}
 			</View>
 		);
@@ -36,16 +36,49 @@ App.propTypes = {
 	pageType: PropTypes.string
 };
 
-const styles = StyleSheet.create({
+export const appStyles = StyleSheet.create({
 	container: {
-		backgroundColor: '#fff'
+		backgroundColor: '#fff',
+		display: 'flex',
+		flexDirection: 'column',
+		height: '100%',
 	},
-	groupButton: {
+	footerContainer: {
+		display: 'flex',
+		flexShrink: 0,
+		flexDirection: 'row',
+		justifyContent: 'flex-end',
+	},
+	content: {
+		display: 'flex',
+		flexGrow: 1,
+		flexShrink: 0,
+		flexBasis: 'auto',
+		height: '90%'
+	},
+	entryButton: {
 		width: '100%'
 	},
 	header: {
 		fontSize: 20,
 		top: 30,
-		left: 10
+		left: 10,
+	},
+	flexCenter: {
+		display: 'flex',
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		justifyContent: 'center',
+		alignContent: 'center',
+		alignItems: 'center',
+		height: 400,
+	},
+	flexCenterBottom: {
+		display: 'flex',
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		justifyContent: 'flex-end',
+		alignContent: 'center',
+		alignItems: 'center',
 	}
 });

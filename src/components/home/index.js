@@ -1,30 +1,41 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Footer from './footer';
+import { appStyles } from '../app';
+import { Button, ScrollView, View } from 'react-native';
 
-export default class GroupList extends React.Component {
-	renderGroupings () {
-		return this.props.groupingList.map(group => {
-			<Button style={styles.groupButton} title={group.name} onPress={() => this.openGroup()}/>
+export default class Home extends React.Component {
+	renderAccountList () {
+		const { accountList } = this.props;
+
+		return accountList.map(account => {
+			const { id, name } = account;
+			return (
+				<Button key={id} title={name} style={appStyles.entryButton}>
+
+				</Button>
+			);
 		});
 	}
 
 	render () {
+		const { addAccount } = this.props;
+
 		return (
-			<Footer />
+			<View>
+				<ScrollView style={appStyles.content}>
+					{this.renderAccountList()}
+				</ScrollView>
+				<Footer addAccount={addAccount}/>
+			</View>
 		);
 	}
 }
 
-GroupList.propTypes = {
-	groupingList: PropTypes.arrayOf(PropTypes.shape({
+Home.propTypes = {
+	accountList: PropTypes.arrayOf(PropTypes.shape({
 		name: PropTypes.string,
 		id: PropTypes.string
-	}))
+	})),
+	addAccount: PropTypes.func.isRequired
 };
-
-const styles = StyleSheet.create({
-	groupButton: {
-		width: '100%'
-	}
-});

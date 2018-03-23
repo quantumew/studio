@@ -1,4 +1,7 @@
+import { getPreloadedState } from '../services/storage';
+
 export const CHANGE_PAGE_TYPE = 'CHANGE_PAGE_TYPE';
+export const HYDRATE = 'HYDRATE';
 
 export default function reducer (state = {}, action) {
 	switch (action.type) {
@@ -27,4 +30,21 @@ export const changePageType = (pageType, accountId, entryId) => {
 		accountId,
 		entryId
 	};
+};
+
+export const hydrateAction = (accountList = [], entryList = []) => {
+	return {
+		type: HYDRATE,
+		accountList,
+		entryList
+	};
+};
+
+export const hydrate = (dispatch) => {
+	getPreloadedState().then(initState => {
+		initState = initState || {};
+		const { accountList, entryList } = initState;
+
+		dispatch(hydrateAction(accountList, entryList));
+	});
 };
