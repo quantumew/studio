@@ -11,6 +11,7 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
     "jest-expo": "25.0.0",
+    "react-native-debugger-open": "^0.3.17",
     "react-native-scripts": "1.11.1",
     "react-test-renderer": "16.2.0"
   },
@@ -22,7 +23,8 @@
     "ios": "react-native-scripts ios",
     "lint": "eslint src",
     "lint:fix": "npm run lint -- --fix",
-    "test": "node node_modules/jest/bin/jest.js"
+    "test": "node node_modules/jest/bin/jest.js",
+    "postinstall": "rndebugger-open"
   },
   "jest": {
     "preset": "jest-expo"
@@ -32,7 +34,7 @@
     "prop-types": "^15.6.1",
     "react": "16.2.0",
     "react-native": "0.52.0",
-    "react-native-storage": "^0.2.2",
+    "react-navigation": "^1.5.8",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",

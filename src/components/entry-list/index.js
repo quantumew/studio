@@ -1,40 +1,64 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Footer from './footer';
-import { Button, StyleSheet } from 'react-native';
-import { ENTRY } from '../../constants';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { appStyles } from '../app';
+import Entry from './entry';
+import { guidGenerator } from '../../utils';
 
 export default class EntryList extends React.Component {
-	openEntry (entryId) {
-		const { accountId, changePageType } = this.props;
+	createNewEntry () {
+		const { accountId, navigation, newEntry } = this.props;
+		const id = guidGenerator();
 
-		changePageType(ENTRY, accountId, entryId);
+		newEntry(accountId, id);
+		navigation.navigate('Entry', { accountId, id });
 	}
 
 	renderEntries () {
-		return this.props.entryList.map(entry => {
-			const { id, name } = entry;
+		const { accountId, entryList, navigation } = this.props;
+
+		return entryList.map(entry => {
+			const { id } = entry;
 
 			return (
-				<Button key={id} style={styles.groupButton} title={name} onPress={() => this.openEntry(id)}/>
+				<Entry {...entry} accountId={accountId} key={id} navigate={navigation.navigate} />
 			);
 		});
 	}
 
 	render () {
 		return (
-			<Footer />
+			<View style={appStyles.container}>
+				<ScrollView style={appStyles.content}>
+					{ this.renderEntries() }
+				</ScrollView>
+				<Footer newEntry={() => this.createNewEntry()} />
+			</View>
 		);
 	}
 }
 
+EntryList.navigationOptions = {
+	title: 'Music Studio'
+};
+
+EntryList.defaultProps = {
+	entryList: []
+};
+
 EntryList.propTypes = {
 	accountId: PropTypes.string.isRequired,
-	changePageType: PropTypes.func.isRequired,
+	accountName: PropTypes.string.isRequired,
 	entryList: PropTypes.arrayOf(PropTypes.shape({
 		name: PropTypes.string,
-		id: PropTypes.string
-	}))
+		id: PropTypes.string,
+		timestamp: PropTypes.string.isRequired,
+	})),
+	navigation: PropTypes.shape({
+		navigate: PropTypes.func.isRequired
+	}),
+	newEntry: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({

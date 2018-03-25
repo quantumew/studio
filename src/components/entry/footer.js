@@ -4,18 +4,18 @@ import { Button, StyleSheet, View } from 'react-native';
 
 export default class Footer extends React.Component {
 	render () {
-		const { addEntry } = this.props;
+		const { removeEntry } = this.props;
 
 		return (
 			<View>
-				<Button title="New Entry" onPress={() => addEntry()} style={styles.entryButton}/>
+				<Button title="Remove Entry" onPress={() => removeEntry()} style={styles.entryButton}/>
 			</View>
 		);
 	}
 }
 
 Footer.propTypes = {
-	addEntry: PropTypes.func.isRequired
+	removeEntry: PropTypes.func.isRequired
 };
 
 const styles = StyleSheet.create({

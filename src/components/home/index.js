@@ -1,41 +1,49 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Footer from './footer';
+import Account from './account';
 import { appStyles } from '../app';
-import { Button, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
+import AccountModal from '../../containers/account-modal';
 
 export default class Home extends React.Component {
 	renderAccountList () {
-		const { accountList } = this.props;
+		const { accountList, navigation } = this.props;
 
 		return accountList.map(account => {
 			const { id, name } = account;
 			return (
-				<Button key={id} title={name} style={appStyles.entryButton}>
-
-				</Button>
+				<Account key={id} id={id} name={name} navigate={navigation.navigate} />
 			);
 		});
 	}
 
 	render () {
-		const { addAccount } = this.props;
+		const { toggleModal } = this.props;
 
 		return (
-			<View>
+			<View style={appStyles.container}>
+				<AccountModal />
 				<ScrollView style={appStyles.content}>
 					{this.renderAccountList()}
 				</ScrollView>
-				<Footer addAccount={addAccount}/>
+				<Footer toggleModal={toggleModal}/>
 			</View>
 		);
 	}
 }
+
+Home.navigationOptions = {
+	title: 'Music Studio'
+};
 
 Home.propTypes = {
 	accountList: PropTypes.arrayOf(PropTypes.shape({
 		name: PropTypes.string,
 		id: PropTypes.string
 	})),
-	addAccount: PropTypes.func.isRequired
+	toggleModal: PropTypes.func.isRequired,
+	navigation: PropTypes.shape({
+		navigate: PropTypes.func.isRequired
+	}).isRequired
 };

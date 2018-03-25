@@ -5,18 +5,18 @@ import { appStyles } from '../app';
 
 export default class Footer extends React.Component {
 	render () {
-		const { addAccount } = this.props;
+		const { toggleModal } = this.props;
 
 		return (
 			<View style={appStyles.footerContainer}>
-				<Button title="New Account" onPress={() => addAccount()} style={styles.accountButton}/>
+				<Button title="New Account" onPress={() => toggleModal()} style={styles.accountButton}/>
 			</View>
 		);
 	}
 }
 
 Footer.propTypes = {
-	addAccount: PropTypes.func.isRequired
+	toggleModal: PropTypes.func.isRequired
 };
 
 const styles = StyleSheet.create({

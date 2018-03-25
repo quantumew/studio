@@ -1,25 +1,22 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Component from '../components/entry';
-import { changePageType, getAccountId, getEntryId } from '../reducers/app';
-import { getEntry, addEntry } from '../reducers/entry-list';
+import { removeEntry, editEntry, getEntryForAccountById } from '../reducers/entry-list';
 
 function mapStateToProps (state, props) {
-	const accountId = getAccountId(state);
-	const entryId = getEntryId(state);
+	const { accountId, id } = props.navigation.state.params;
 
 	return {
 		accountId,
-		entryId,
-		...getEntry(state, entryId)
+		...getEntryForAccountById(state, id)
 	};
 }
 
-function mapDispatchToProps () {
+function mapDispatchToProps (dispatch) {
 	return bindActionCreators({
-		addEntry,
-		changePageType
-	});
+		editEntry,
+		removeEntry,
+	}, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

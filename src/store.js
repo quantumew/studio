@@ -4,7 +4,7 @@ import reducers from './reducers';
 import { hydrate } from './reducers/app';
 
 /* global __REDUX_DEVTOOLS_EXTENSION_COMPOSE__ */
-export default function makeStore (name) {
+export default function makeStore (name, preloadedState = {}) {
 	let composeEnhancers;
 
 	if (typeof __REDUX_DEVTOOLS_EXTENSION_COMPOSE__ === 'function') {
@@ -17,9 +17,11 @@ export default function makeStore (name) {
 
 	const store = createStore(
 		reducers,
-		{},
+		preloadedState,
 		composeEnhancers(applyMiddleware(thunkMiddleware))
 	);
+
+	// Need to hydrate from local storage.
 	hydrate(store.dispatch);
 
 	return store;

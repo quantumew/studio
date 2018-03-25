@@ -2,6 +2,9 @@ import { guidGenerator } from '../utils';
 import { HYDRATE } from './app';
 
 export const ADD_ACCOUNT = 'ADD_ACCOUNT';
+export const EDIT_ACCOUNT = 'EDIT_ACCOUNT';
+export const REMOVE_ACCOUNT = 'REMOVE_ACCOUNT';
+export const TOGGLE_ACCOUNT_MODAL = 'TOGGLE_ACCOUNT_MODAL';
 
 export default function reducer (state = [], action) {
 	switch (action.type) {
@@ -10,8 +13,15 @@ export default function reducer (state = [], action) {
 		case ADD_ACCOUNT:
 			return [
 				...state,
-				action.account,
+				{
+					id: action.id,
+					name: action.name
+				}
 			];
+		case REMOVE_ACCOUNT:
+			return state.filter(acct => {
+				return acct.id !== action.id;
+			});
 		default:
 			return state;
 	}
@@ -24,9 +34,20 @@ export const getAccountList = (state) => state.accountList;
 export const addAccount = (name) => {
 	return {
 		type: ADD_ACCOUNT,
-		account: {
-			id: guidGenerator(),
-			name
-		}
+		id: guidGenerator(),
+		name
+	};
+};
+
+export const removeAccount = (id) => {
+	return {
+		type: REMOVE_ACCOUNT,
+		id
+	};
+};
+
+export const toggleModal = () => {
+	return {
+		type: TOGGLE_ACCOUNT_MODAL,
 	};
 };

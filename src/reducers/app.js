@@ -1,16 +1,15 @@
 import { getPreloadedState } from '../services/storage';
+import { TOGGLE_ACCOUNT_MODAL, ADD_ACCOUNT } from './account-list';
 
-export const CHANGE_PAGE_TYPE = 'CHANGE_PAGE_TYPE';
 export const HYDRATE = 'HYDRATE';
 
 export default function reducer (state = {}, action) {
 	switch (action.type) {
-		case CHANGE_PAGE_TYPE:
+		case ADD_ACCOUNT:
+		case TOGGLE_ACCOUNT_MODAL:
 			return {
 				...state,
-				accountId: action.accountId,
-				entryId: action.entryId,
-				pageType: action.pageType,
+				isAccountModalOpen: !state.isAccountModalOpen
 			};
 		default:
 			return state;
@@ -19,19 +18,9 @@ export default function reducer (state = {}, action) {
 
 // Selectors
 export const getPageType = (state) => state.app.pageType;
-export const getAccountId = (state) => state.app.accountId;
-export const getEntryId = (state) => state.app.entryId;
+export const getIsAccountModalOpen = state => state.app.isAccountModalOpen;
 
 // Actions
-export const changePageType = (pageType, accountId, entryId) => {
-	return {
-		type: CHANGE_PAGE_TYPE,
-		pageType,
-		accountId,
-		entryId
-	};
-};
-
 export const hydrateAction = (accountList = [], entryList = []) => {
 	return {
 		type: HYDRATE,

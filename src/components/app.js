@@ -1,47 +1,19 @@
-import React from 'react';
-import {
-	StyleSheet,
-	Text,
-	View
-} from 'react-native';
-import PropTypes from 'prop-types';
-import { ENTRY, ENTRY_LIST } from '../constants';
+import { StyleSheet } from 'react-native';
 import Home from '../containers/home';
 import EntryList from '../containers/entry-list';
 import Entry from '../containers/entry';
+import { StackNavigator } from 'react-navigation';
 
-export default class App extends React.Component {
-	renderPage () {
-		switch (this.props.pageType) {
-			case ENTRY_LIST:
-				return <EntryList />;
-			case ENTRY:
-				return <Entry />;
-			default:
-				return <Home />;
-		}
-	}
+const App = StackNavigator({
+	Home: { screen: Home },
+	EntryList: { screen: EntryList },
+	Entry: { screen: Entry },
+});
 
-	render () {
-		return (
-			<View style={appStyles.container}>
-				<Text style={appStyles.header}> Studio </Text>
-				{this.renderPage()}
-			</View>
-		);
-	}
-}
-
-App.propTypes = {
-	pageType: PropTypes.string
-};
-
+export default App;
 export const appStyles = StyleSheet.create({
 	container: {
-		backgroundColor: '#fff',
-		display: 'flex',
-		flexDirection: 'column',
-		height: '100%',
+		height: '100%'
 	},
 	footerContainer: {
 		display: 'flex',
@@ -54,14 +26,14 @@ export const appStyles = StyleSheet.create({
 		flexGrow: 1,
 		flexShrink: 0,
 		flexBasis: 'auto',
-		height: '90%'
 	},
 	entryButton: {
-		width: '100%'
+		width: '100%',
+		justifyContent: 'flex-start'
 	},
 	header: {
 		fontSize: 20,
-		top: 30,
+		top: 70,
 		left: 10,
 	},
 	flexCenter: {
@@ -71,7 +43,6 @@ export const appStyles = StyleSheet.create({
 		justifyContent: 'center',
 		alignContent: 'center',
 		alignItems: 'center',
-		height: 400,
 	},
 	flexCenterBottom: {
 		display: 'flex',
