@@ -8,12 +8,16 @@ import AccountModal from '../../containers/account-modal';
 
 export default class Home extends React.Component {
 	renderAccountList () {
-		const { accountList, navigation } = this.props;
+		const { accountList, navigation, removeAccount } = this.props;
 
 		return accountList.map(account => {
 			const { id, name } = account;
 			return (
-				<Account key={id} id={id} name={name} navigate={navigation.navigate} />
+				<Account
+					key={id} id={id} name={name}
+					navigate={navigation.navigate}
+					removeAccount={removeAccount}
+				/>
 			);
 		});
 	}
@@ -45,5 +49,6 @@ Home.propTypes = {
 	toggleModal: PropTypes.func.isRequired,
 	navigation: PropTypes.shape({
 		navigate: PropTypes.func.isRequired
-	}).isRequired
+	}).isRequired,
+	removeAccount: PropTypes.func.isRequired,
 };

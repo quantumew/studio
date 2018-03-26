@@ -1,29 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Footer from './footer';
 import { appStyles } from '../app';
 import { ScrollView, StyleSheet, TextInput, View } from 'react-native';
 
 export default class Entry extends React.Component {
-	constructor (props) {
-		super(props);
-
-		this.state = {
-			textareaHeight: null
-		};
-	}
-
-	onContentSizeChange = ({ nativeEvent: event }) => {
-		this.setState({ textareaHeight: event.contentSize.height });
-	};
-
-	removeEntry () {
-		const { id, navigation, removeEntry } = this.props;
-
-		navigation.goBack();
-		removeEntry(id);
-	}
-
 	render () {
 		const { editEntry, id, text } = this.props;
 
@@ -36,7 +16,6 @@ export default class Entry extends React.Component {
 						style={styles.entryBody}
 					/>
 				</ScrollView>
-				<Footer removeEntry={() => this.removeEntry(id)} />
 			</View>
 		);
 	}
@@ -49,7 +28,6 @@ Entry.propTypes = {
 	navigation: PropTypes.shape({
 		goBack: PropTypes.func.isRequired
 	}),
-	removeEntry: PropTypes.func.isRequired,
 	text: PropTypes.string,
 };
 

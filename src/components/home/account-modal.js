@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Modal, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 export default class Footer extends React.Component {
 	constructor (props) {
@@ -31,16 +31,25 @@ export default class Footer extends React.Component {
 				onRequestClose={() => close()}
 			>
 				<View style={styles.outsideContainer}>
-					<Text>New Folder</Text>
+					<Text style={styles.heading}>New Folder</Text>
 
 					<TextInput
 						style={styles.textInput}
 						onChangeText={name => this.setState({ name })}
 						value={this.state.name}
+						placeholder="Name"
 					/>
 					<View style={styles.buttonWrapper}>
-						<Button onPress={() => close()} title="Cancel" style={styles.button}/>
-						<Button onPress={() => this.save()} title="Save" style={styles.button}/>
+						<TouchableOpacity onPress={() => close()} style={styles.modalButton}>
+							<Text style={styles.buttonText}>
+								Cancel
+							</Text>
+						</TouchableOpacity>
+						<TouchableOpacity onPress={() => this.save()} style={styles.modalButton}>
+							<Text style={styles.buttonText}>
+								Save
+							</Text>
+						</TouchableOpacity>
 					</View>
 				</View>
 			</Modal>
@@ -55,12 +64,26 @@ Footer.propTypes = {
 };
 
 const styles = StyleSheet.create({
-	button: {},
+	buttonText: {
+		fontSize: 18,
+		color: '#606060',
+		textAlign: 'center',
+		margin: 5
+	},
 	buttonWrapper: {
 		display: 'flex',
 		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		width: '66%',
+	},
+	heading: {
+		fontSize: 20,
+		marginBottom: 20
+	},
+	modalButton: {
+		width: '50%',
+		borderColor: '#d6d7da',
+		borderWidth: 1,
 	},
 	outsideContainer: {
 		marginTop: 100,

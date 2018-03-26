@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Footer from './footer';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { appStyles } from '../app';
 import Entry from './entry';
 import { guidGenerator } from '../../utils';
@@ -16,13 +16,13 @@ export default class EntryList extends React.Component {
 	}
 
 	renderEntries () {
-		const { accountId, entryList, navigation } = this.props;
+		const { accountId, entryList, navigation, removeEntry } = this.props;
 
 		return entryList.map(entry => {
 			const { id } = entry;
 
 			return (
-				<Entry {...entry} accountId={accountId} key={id} navigate={navigation.navigate} />
+				<Entry {...entry} removeEntry={removeEntry} accountId={accountId} key={id} navigate={navigation.navigate} />
 			);
 		});
 	}
@@ -51,7 +51,6 @@ EntryList.propTypes = {
 	accountId: PropTypes.string.isRequired,
 	accountName: PropTypes.string.isRequired,
 	entryList: PropTypes.arrayOf(PropTypes.shape({
-		name: PropTypes.string,
 		id: PropTypes.string,
 		timestamp: PropTypes.string.isRequired,
 	})),
@@ -59,10 +58,5 @@ EntryList.propTypes = {
 		navigate: PropTypes.func.isRequired
 	}),
 	newEntry: PropTypes.func.isRequired,
+	removeEntry: PropTypes.func.isRequired,
 };
-
-const styles = StyleSheet.create({
-	groupButton: {
-		width: '100%'
-	}
-});

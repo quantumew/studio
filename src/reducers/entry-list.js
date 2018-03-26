@@ -1,6 +1,7 @@
 import { guidGenerator } from '../utils';
 import { createSelector } from 'reselect';
 import { HYDRATE } from './app';
+import { REMOVE_ACCOUNT } from './account-list';
 
 export const NEW_ENTRY = 'NEW_ENTRY';
 export const EDIT_ENTRY = 'EDIT_ENTRY';
@@ -16,7 +17,6 @@ export default function reducer (state = [], action) {
 				{
 					id: action.id,
 					accountId: action.accountId,
-					name: action.name,
 					text: action.text,
 					timestamp: action.timestamp,
 				},
@@ -36,6 +36,10 @@ export default function reducer (state = [], action) {
 		case REMOVE_ENTRY:
 			return state.filter(e => {
 				return e.id !== action.id;
+			});
+		case REMOVE_ACCOUNT:
+			return state.filter(e => {
+				return e.accountId !== action.id;
 			});
 		default:
 			return state;
@@ -62,7 +66,7 @@ export const getEntryForAccountById = createSelector(
 );
 
 // Actions
-export const newEntry = (accountId, id, initText = 'New Song') => {
+export const newEntry = (accountId, id) => {
 	if (!id) {
 		id = guidGenerator();
 	}
@@ -71,8 +75,7 @@ export const newEntry = (accountId, id, initText = 'New Song') => {
 		type: NEW_ENTRY,
 		id,
 		accountId,
-		name: initText,
-		text: initText,
+		text: '',
 		timestamp: new Date().toISOString(),
 	};
 };
