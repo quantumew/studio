@@ -22,9 +22,7 @@ export const appStyles = StyleSheet.create({
 		justifyContent: 'flex-end',
 	},
 	content: {
-		display: 'flex',
-		flexGrow: 1,
-		flexShrink: 0,
+		flex: 1,
 		flexBasis: 'auto',
 	},
 	entryButton: {

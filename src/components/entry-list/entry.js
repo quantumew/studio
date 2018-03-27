@@ -28,10 +28,13 @@ export default class Entry extends React.Component {
 	getPreviewText () {
 		const text = this.props.text;
 		const { width } = Dimensions.get('window');
-		const charWidth = width / 8;
+		const maxWidth = width / 8;
 
-		const title = text.slice(0, charWidth);
-		const preview = text ? text.slice(charWidth, charWidth + charWidth) : 'No additional text';
+		const lineOne = text.split('\n')[0];
+		const title = lineOne.slice(0, maxWidth);
+		const lineTwoStart = text.indexOf(title) + title.length;
+		const lineTwo = text.slice(lineTwoStart, lineTwoStart + maxWidth).replace(/^\n/, '');
+		const preview = text.length > title.length ? lineTwo : 'No additional text';
 
 		return {
 			preview,
