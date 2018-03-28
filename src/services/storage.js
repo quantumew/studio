@@ -1,33 +1,45 @@
 import { AsyncStorage } from 'react-native';
+import { getAccountList } from '../reducers/account-list';
+import { getAudioList } from '../reducers/audio-list';
+import { getEntryList } from '../reducers/entry-list';
 
-const stores = [
+const storeKeys = [
 	'accountList',
-	'entryList'
+	'audioList',
+	'entryList',
 ];
 
 export function getPreloadedState () {
-	const promiseList = stores.map(key => {
-		return get(key).then(result => {
-			return { [key]: result };
-		});
-	});
+	return AsyncStorage.multiGet(storeKeys, (err, stores) => {
+		return stores.reduce((result, item) => {
+			const key = item[0];
+			const value = item[1];
 
-	return Promise.all(promiseList).then(resultList => {
-		resultList.reduce((resultMap, result) => {
-			return {
-				...resultMap,
-				...result
-			};
+			result[key] = JSON.parse(value);
+
+			return result;
 		}, {});
 	});
 }
 
+export function save (state) {
+	return Promise.all([
+		setAccountList(getAccountList(state)),
+		setAudioList(getAudioList(state)),
+		setEntryList(getEntryList(state)),
+	]);
+}
+
 export function setAccountList (value) {
-	set('accountList', value);
+	return set('accountList', value);
 }
 
 export function setEntryList (value) {
-	set('entryList', value);
+	return set('entryList', value);
+}
+
+export function setAudioList (value) {
+	return set('audioList', value);
 }
 
 export function set (key, value) {

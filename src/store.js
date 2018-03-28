@@ -1,7 +1,8 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import reducers from './reducers';
-import { hydrate } from './reducers/app';
+import { hydrate, stateHasDiff } from './reducers/app';
+import { save } from './services/storage';
 
 /* global __REDUX_DEVTOOLS_EXTENSION_COMPOSE__ */
 export default function makeStore (name, preloadedState = {}) {
@@ -23,6 +24,15 @@ export default function makeStore (name, preloadedState = {}) {
 
 	// Need to hydrate from local storage.
 	hydrate(store.dispatch);
+	let prevState;
+	setInterval(() => {
+		const newState = store.getState();
+		if (stateHasDiff(newState, prevState)) {
+			console.log('save')
+			prevState = newState;
+			save(newState);
+		}
+	}, 500);
 
 	return store;
 }
