@@ -2,6 +2,7 @@ import React from 'react';
 import { ScrollView, View } from 'react-native';
 import { appStyles } from '../app';
 import PropTypes from 'prop-types';
+import Recorder from '../audio/recorder';
 import Player from '../audio/player';
 
 export default class AudioBar extends React.Component {
@@ -17,6 +18,7 @@ export default class AudioBar extends React.Component {
 		return (
 			<View style={appStyles.footerContainer}>
 				<ScrollView horizontal={true}>
+					<Recorder />
 					{this.renderAudio()}
 				</ScrollView>
 			</View>

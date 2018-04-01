@@ -16,6 +16,12 @@ export default class Footer extends React.Component {
 		this.setState({ name: '' });
 	}
 
+	componentDidUpdate (prevProps) {
+		if (!prevProps.isOpen && this.props.isOpen) {
+			this.text.focus();
+		}
+	}
+
 	render () {
 		const { close, isOpen } = this.props;
 
@@ -38,6 +44,7 @@ export default class Footer extends React.Component {
 						onChangeText={name => this.setState({ name })}
 						value={this.state.name}
 						placeholder="Name"
+						ref={el => this.text = el}
 					/>
 					<View style={styles.buttonWrapper}>
 						<TouchableOpacity onPress={() => close()} style={styles.modalButton}>
