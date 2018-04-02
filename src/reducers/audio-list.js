@@ -12,13 +12,13 @@ export default function reducer (state = [], action) {
 			return action.audioList;
 		case NEW_AUDIO:
 			return [
-				...state,
 				{
 					fileName: action.fileName,
 					name: action.name,
 					id: action.id,
 					entryId: action.entryId,
 				},
+				...state,
 			];
 		case REMOVE_AUDIO:
 			return state.filter(e => {

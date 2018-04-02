@@ -14,6 +14,14 @@ export default class Entry extends React.Component {
 		};
 	}
 
+	newAudio (info, audioId) {
+		const { id, newAudio } = this.props;
+		const { uri } = info;
+		const parts = uri.split('/');
+		const name = parts[parts.length - 1];
+		newAudio(id, name, uri, audioId);
+	}
+
 	render () {
 		const { audioList, editEntry, id, text } = this.props;
 
@@ -28,7 +36,7 @@ export default class Entry extends React.Component {
 						ref={el => this.text = el}
 					/>
 				</KeyboardAwareScrollView>
-				<AudioBar audioList={audioList}/>
+				<AudioBar audioList={audioList} newAudio={(info, id) => this.newAudio(info, id)}/>
 			</View>
 		);
 	}
@@ -45,6 +53,7 @@ Entry.propTypes = {
 	navigation: PropTypes.shape({
 		goBack: PropTypes.func.isRequired
 	}),
+	newAudio: PropTypes.func.isRequired,
 	text: PropTypes.string,
 };
 

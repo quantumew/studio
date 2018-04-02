@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-export default class Footer extends React.Component {
+export default class PromptModal extends React.Component {
 	constructor (props) {
 		super(props);
 
@@ -29,6 +29,8 @@ export default class Footer extends React.Component {
 			return null;
 		}
 
+		const isDisabled = this.state.name.length < 1;
+
 		return (
 			<Modal
 				animationType="slide"
@@ -52,8 +54,12 @@ export default class Footer extends React.Component {
 								Cancel
 							</Text>
 						</TouchableOpacity>
-						<TouchableOpacity onPress={() => this.save()} style={styles.modalButton}>
-							<Text style={styles.buttonText}>
+						<TouchableOpacity
+							onPress={() => this.save()}
+							disabled={isDisabled}
+							style={styles.modalButton}
+						>
+							<Text style={[styles.buttonText, isDisabled ? styles.disabled : styles.enabled]}>
 								Save
 							</Text>
 						</TouchableOpacity>
@@ -64,7 +70,7 @@ export default class Footer extends React.Component {
 	}
 }
 
-Footer.propTypes = {
+PromptModal.propTypes = {
 	close: PropTypes.func.isRequired,
 	isOpen: PropTypes.bool,
 	save: PropTypes.func.isRequired,
@@ -82,6 +88,12 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		width: '66%',
+	},
+	enabled: {
+		opacity: 1,
+	},
+	disabled: {
+		opacity: 0.3,
 	},
 	heading: {
 		fontSize: 20,

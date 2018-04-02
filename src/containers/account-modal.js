@@ -1,6 +1,6 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import Component from '../components/home/account-modal';
+import Component from '../components/prompt-modal';
 import { getIsAccountModalOpen } from '../reducers/app';
 import { toggleModal, addAccount } from '../reducers/account-list';
 
