@@ -2,15 +2,17 @@ import { StyleSheet } from 'react-native';
 import Home from '../containers/home';
 import EntryList from '../containers/entry-list';
 import Entry from '../containers/entry';
+import Audio from '../containers/audio';
 import { StackNavigator } from 'react-navigation';
 
-const App = StackNavigator({
+// Create app structure with basic navigation structure.
+export default StackNavigator({
 	Home: { screen: Home },
-	EntryList: { screen: EntryList },
+	Audio: { screen: Audio }, // Per entry audio page
 	Entry: { screen: Entry },
+	EntryList: { screen: EntryList },
 });
 
-export default App;
 export const appStyles = StyleSheet.create({
 	container: {
 		height: '100%'

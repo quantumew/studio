@@ -6,7 +6,8 @@ import { toggleModal, addAccount } from '../reducers/account-list';
 
 function mapStateToProps (state) {
 	return {
-		isOpen: getIsAccountModalOpen(state)
+		isOpen: getIsAccountModalOpen(state),
+		text: 'New Folder',
 	};
 }
 

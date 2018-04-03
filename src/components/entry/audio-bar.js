@@ -12,6 +12,7 @@ const ICON_RECORD_BUTTON = new Icon(require('../../../assets/record.png'), 70, 7
 const ICON_STOP_BUTTON = new Icon(require('../../../assets/stop.png'), 70, 70);
 const ICON_PLAY_BUTTON = new Icon(require('../../../assets/play.png'), 70, 70);
 const ICON_PAUSE_BUTTON = new Icon(require('../../../assets/pause.png'), 70, 70);
+const ICON_TOOLS_BUTTON = new Icon(require('../../../assets/tools.png'), 70, 70);
 
 export default class AudioBar extends React.Component {
 	constructor (props) {
@@ -94,6 +95,7 @@ export default class AudioBar extends React.Component {
 				volume: status.volume,
 				shouldCorrectPitch: status.shouldCorrectPitch,
 				isPlaybackAllowed: true,
+				playingId: status.didJustFinish ? null : this.state.playingId,
 			});
 		} else {
 			this.setState({
@@ -108,9 +110,10 @@ export default class AudioBar extends React.Component {
 		}
 	}
 
-	async stopRecordingAndEnablePlayback () {
+	async stopRecordingAndEnablePlayback (name) {
 		this.setState({
 			isLoading: true,
+			isModalOpen: false,
 		});
 		try {
 			await this.recording.stopAndUnloadAsync();
@@ -118,8 +121,6 @@ export default class AudioBar extends React.Component {
 			// Do nothing -- we are already unloaded.
 		}
 		const info = await FileSystem.getInfoAsync(this.recording.getURI());
-		const id = guidGenerator();
-		this.props.newAudio(info, id);
 		await Audio.setAudioModeAsync({
 			allowsRecordingIOS: false,
 			interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
@@ -130,7 +131,7 @@ export default class AudioBar extends React.Component {
 		});
 		const { sound } = await this.recording.createNewLoadedSound(
 			{
-				isLooping: true,
+				isLooping: false,
 				isMuted: this.state.muted,
 				volume: this.state.volume,
 				rate: this.state.rate,
@@ -138,6 +139,8 @@ export default class AudioBar extends React.Component {
 			},
 			status => this.updateScreenForSoundStatus(status)
 		);
+		const id = guidGenerator();
+		this.props.newAudio(info, id, name, this.state.soundDuration);
 		this.soundMap[id] = sound;
 		this.setState({
 			isLoading: false,
@@ -165,7 +168,7 @@ export default class AudioBar extends React.Component {
 	}
 
 	onStopPressed () {
-		this.stopRecordingAndEnablePlayback();
+		this.setState({ isModalOpen: true });
 	}
 
 	async onRecordPressed () {
@@ -204,6 +207,12 @@ export default class AudioBar extends React.Component {
 		});
 	}
 
+	openTools () {
+		const { entryId, navigation } = this.props;
+
+		navigation.navigate('Audio', { entryId });
+	}
+
 	renderPlay () {
 		const { audioList } = this.props;
 
@@ -233,6 +242,10 @@ export default class AudioBar extends React.Component {
 	}
 
 	renderRecorder () {
+		if (!this.state.haveRecordingPermissions) {
+			return null;
+		}
+
 		if (this.state.isRecording) {
 			return (
 				<AudioButton
@@ -251,27 +264,29 @@ export default class AudioBar extends React.Component {
 		);
 	}
 
-	render () {
-		// if (!this.state.haveRecordingPermissions) {
-		// 	return (
-		// 		<View>
-		// 			<Text>
-		// 				You must enable audio recording permissions in order to use this app.
-		// 			</Text>
-		// 		</View>
-		// 	);
-		// }
+	renderTools () {
+		return (
+			<AudioButton
+				onPress={() => this.openTools()}
+				image={ICON_TOOLS_BUTTON}
+				isDisabled={this.state.isLoading}
+			/>
+		);
+	}
 
+	render () {
 		return (
 			<View style={appStyles.footerContainer}>
 				<ScrollView horizontal={true}>
 					{this.renderRecorder()}
+					{this.renderTools()}
 					{this.renderPlay()}
 				</ScrollView>
 				<PromptModal
-					save={name => this.saveAudio(name)}
+					save={name => this.stopRecordingAndEnablePlayback(name)}
 					close={() => this.setState({ isModalOpen: false })}
 					isOpen={this.state.isModalOpen}
+					text="Audio Clip Name"
 				/>
 			</View>
 		);
@@ -287,5 +302,9 @@ AudioBar.propTypes = {
 		fileName: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
 	})).isRequired,
+	entryId: PropTypes.string.isRequired,
+	navigation: PropTypes.shape({
+		navigate: PropTypes.func.isRequired
+	}),
 	newAudio: PropTypes.func.isRequired,
 };

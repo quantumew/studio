@@ -23,7 +23,7 @@ export default class PromptModal extends React.Component {
 	}
 
 	render () {
-		const { close, isOpen } = this.props;
+		const { close, isOpen, text } = this.props;
 
 		if (!isOpen) {
 			return null;
@@ -39,7 +39,7 @@ export default class PromptModal extends React.Component {
 				onRequestClose={() => close()}
 			>
 				<View style={styles.outsideContainer}>
-					<Text style={styles.heading}>New Folder</Text>
+					<Text style={styles.heading}>{text}</Text>
 
 					<TextInput
 						style={styles.textInput}
@@ -74,6 +74,7 @@ PromptModal.propTypes = {
 	close: PropTypes.func.isRequired,
 	isOpen: PropTypes.bool,
 	save: PropTypes.func.isRequired,
+	text: PropTypes.string.isRequired,
 };
 
 const styles = StyleSheet.create({

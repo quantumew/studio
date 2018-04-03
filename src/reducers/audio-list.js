@@ -17,6 +17,8 @@ export default function reducer (state = [], action) {
 					name: action.name,
 					id: action.id,
 					entryId: action.entryId,
+					timestamp: action.timestamp,
+					duration: action.duration,
 				},
 				...state,
 			];
@@ -45,17 +47,15 @@ export const getAudioListForEntry = createSelector(
 );
 
 // Actions
-export const newAudio = (entryId, name, fileName, id) => {
-	if (!id) {
-		id = guidGenerator();
-	}
-
+export const newAudio = (entryId, name, fileName, id, duration) => {
 	return {
 		type: NEW_AUDIO,
 		id,
 		entryId,
 		fileName,
 		name,
+		duration,
+		timestamp: new Date().toISOString(),
 	};
 };
 
