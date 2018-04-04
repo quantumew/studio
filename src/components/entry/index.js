@@ -43,6 +43,10 @@ export default class Entry extends React.Component {
 	}
 }
 
+Entry.navigationOptions = {
+	title: 'Notes'
+};
+
 Entry.propTypes = {
 	accountId: PropTypes.string.isRequired,
 	audioList: PropTypes.arrayOf(PropTypes.shape({

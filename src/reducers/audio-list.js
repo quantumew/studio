@@ -1,4 +1,3 @@
-import { guidGenerator } from '../utils';
 import { createSelector } from 'reselect';
 import { HYDRATE } from './app';
 import { REMOVE_ENTRY } from './entry-list';
@@ -17,7 +16,7 @@ export default function reducer (state = [], action) {
 					name: action.name,
 					id: action.id,
 					entryId: action.entryId,
-					timestamp: action.timestamp,
+					creationDate: action.creationDate,
 					duration: action.duration,
 				},
 				...state,
@@ -48,14 +47,25 @@ export const getAudioListForEntry = createSelector(
 
 // Actions
 export const newAudio = (entryId, name, fileName, id, duration) => {
+	const durationSeconds = Math.round(duration / 1000);
+	const displaySecs = durationSeconds % 60;
+	const paddedSecs = displaySecs.toString().length === 1 ? `0${displaySecs}` : displaySecs;
+	const displayableDuration = `${(durationSeconds - displaySecs) / 60}:${paddedSecs}`;
+
+	const date = new Date();
+	const year = new String(date.getFullYear()).slice(2, 4);
+	const month = date.getMonth() + 1;
+	const day = date.getDate();
+
 	return {
 		type: NEW_AUDIO,
 		id,
 		entryId,
 		fileName,
 		name,
-		duration,
-		timestamp: new Date().toISOString(),
+		duration: displayableDuration,
+		durationSeconds,
+		creationDate: `${month}/${day}/${year}`,
 	};
 };
 
