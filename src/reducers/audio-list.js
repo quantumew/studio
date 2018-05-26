@@ -4,6 +4,7 @@ import { REMOVE_ENTRY } from './entry-list';
 
 export const NEW_AUDIO = 'NEW_AUDIO';
 export const REMOVE_AUDIO = 'REMOVE_AUDIO';
+export const TOGGLE_AUDIO_EXPANSION = 'TOGGLE_AUDIO_EXPANSION';
 
 export default function reducer (state = [], action) {
 	switch (action.type) {
@@ -29,6 +30,18 @@ export default function reducer (state = [], action) {
 			return state.filter(e => {
 				return e.entryId !== action.id;
 			});
+		case TOGGLE_AUDIO_EXPANSION: {
+			const expanded = state.find(audio => audio.isExpanded) || {};
+
+			return state.map(audio => {
+				const isExpanded = action.id === audio.id && expanded.id !== audio.id;
+
+				return {
+					...audio,
+					isExpanded
+				};
+			});
+		}
 		default:
 			return state;
 	}
@@ -44,6 +57,10 @@ export const getAudioListForEntry = createSelector(
 		return audioList.filter(entry => entry.entryId === entryId);
 	}
 );
+
+export const getIsSelected = state => {
+	return state.audioList.find(audio => audio.isExpanded) !== undefined;
+};
 
 // Actions
 export const newAudio = (entryId, name, fileName, id, duration) => {
@@ -72,6 +89,13 @@ export const newAudio = (entryId, name, fileName, id, duration) => {
 export const removeAudio = id => {
 	return {
 		type: REMOVE_AUDIO,
+		id,
+	};
+};
+
+export const toggleAudioExpansion = id => {
+	return {
+		type: TOGGLE_AUDIO_EXPANSION,
 		id,
 	};
 };

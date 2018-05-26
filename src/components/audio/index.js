@@ -1,6 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Image, ScrollView, Slider, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+	Image,
+	ListView,
+	ScrollView,
+	Slider,
+	StyleSheet,
+	Text,
+	TouchableOpacity,
+	View
+} from 'react-native';
 import { appStyles } from '../app';
 import Icon from '../entry/icon';
 
@@ -9,19 +18,18 @@ const ICON_PLAY_BUTTON = new Icon(require('../../../assets/play.png'), 70, 70);
 export default class Audio extends React.Component {
 	constructor (props) {
 		super(props);
+		this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+
 		this.state = {
+			dataSource: this.ds.cloneWithRows(this.props.audioList),
 			idExpanded: null
 		};
 	}
 
-	handleAudioPress (id) {
-		let idExpanded = null;
-
-		if (this.state.idExpanded === null) {
-			idExpanded = id;
+	componentWillReceiveProps (nextProps) {
+		if (nextProps.audioList !== this.props.audioList) {
+			this.setState({ dataSource: this.ds.cloneWithRows(nextProps.audioList) });
 		}
-
-		this.setState({ idExpanded });
 	}
 
 	renderExpandedAudio (audio) {
@@ -48,14 +56,15 @@ export default class Audio extends React.Component {
 	}
 
 	renderAudio (audio) {
+		const { isSelected, toggleAudioExpansion } = this.props;
 		const containerStyles = [styles.playContainer];
 
-		if (this.state.idExpanded !== null) {
+		if (isSelected) {
 			containerStyles.push(styles.opaque);
 		}
 
 		return (
-			<TouchableOpacity key={audio.id} style={containerStyles} onPress={() => this.handleAudioPress(audio.id)}>
+			<TouchableOpacity key={audio.id} style={containerStyles} onPress={() => toggleAudioExpansion(audio.id)}>
 				<Text style={styles.name}>{audio.name}</Text>
 				<View style={styles.textContainer}>
 					<Text style={styles.creationDate}>{audio.creationDate}</Text>
@@ -65,23 +74,22 @@ export default class Audio extends React.Component {
 		);
 	}
 
-	renderAudioList () {
-		const { audioList } = this.props;
+	renderAudioList (audio) {
+		if (audio.isExpanded) {
+			return this.renderExpandedAudio(audio);
+		}
 
-		return audioList.map(audio => {
-			if (audio.id === this.state.idExpanded) {
-				return this.renderExpandedAudio(audio);
-			}
-
-			return this.renderAudio(audio);
-		});
+		return this.renderAudio(audio);
 	}
 
 	render () {
 		return (
 			<View style={appStyles.container}>
 				<ScrollView style={appStyles.content}>
-					{ this.renderAudioList() }
+					<ListView
+						dataSource={this.state.dataSource}
+						renderRow={rowData => this.renderAudioList(rowData)}
+					/>
 				</ScrollView>
 			</View>
 		);
@@ -106,6 +114,8 @@ Audio.propTypes = {
 		navigate: PropTypes.func.isRequired
 	}),
 	newAudio: PropTypes.func.isRequired,
+	isSelected: PropTypes.bool.isRequired,
+	toggleAudioExpansion: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({
